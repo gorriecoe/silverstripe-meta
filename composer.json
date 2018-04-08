@@ -24,8 +24,7 @@
   "require":
   {
     "silverstripe/framework": "^4.0",
-    "gorriecoe/silverstripe-sreg": "^1.2",
-    "gorriecoe/silverstripe-htmltag": "^1.1"
+    "gorriecoe/silverstripe-sreg": "^1.2"
   },
   "extra": {
     "installer-name": "meta"

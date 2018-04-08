@@ -5,4 +5,12 @@ Only:
 ---
 SilverStripe\CMS\Model\SiteTree:
   extensions:
-    - gorriecoe\Meta\Extensions\MetaExtension
+    - gorriecoe\Meta\Extensions\MetaFieldsExtension
+    - gorriecoe\Meta\Extensions\MetaTagExtension
+---
+Only:
+  moduleexists: 'silverstripe/siteconfig'
+---
+SilverStripe\CMS\Model\SiteTree:
+  extensions:
+    - gorriecoe\Meta\Extensions\MetaFieldsExtension

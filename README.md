@@ -11,7 +11,6 @@ composer require gorriecoe/silverstripe-action
 
 - silverstripe/cms ^4.0
 - gorriecoe/silverstripe-sreg ^1.2
-- gorriecoe/silverstripe-htmltag ^1.1
 
 ## Maintainers
 
