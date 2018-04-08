@@ -1,0 +1,8 @@
+---
+Name: metaconfig
+Only:
+  moduleexists: 'silverstripe/cms'
+---
+SilverStripe\CMS\Model\SiteTree:
+  extensions:
+    - gorriecoe\Meta\Extensions\MetaExtension

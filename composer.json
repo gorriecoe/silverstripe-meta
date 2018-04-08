@@ -1,0 +1,33 @@
+{
+  "name": "gorriecoe/silverstripe-meta",
+  "description": "Improves silverstripes html meta data options.",
+  "type": "silverstripe-vendormodule",
+  "license": "BSD-3-Clause",
+  "authors": [
+    {
+      "name": "Gorrie Coe",
+      "email": "gorriecoe@gmail.com"
+    }
+  ],
+  "keywords": [
+    "silverstripe",
+    "meta",
+    "title",
+    "metatitle",
+    "social media",
+    "facebook",
+    "open graph",
+    "opengraph",
+    "share"
+  ],
+  "homepage": "http://github.com/gorriecoe/silverstripe-meta",
+  "require":
+  {
+    "silverstripe/framework": "^4.0",
+    "gorriecoe/silverstripe-sreg": "^1.2",
+    "gorriecoe/silverstripe-htmltag": "^1.1"
+  },
+  "extra": {
+    "installer-name": "meta"
+  }
+}
