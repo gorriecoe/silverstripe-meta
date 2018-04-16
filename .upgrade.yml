@@ -1,0 +1,4 @@
+mappings:
+  MetaFieldsExtension: gorriecoe\Meta\Extensions\MetaFieldsExtension
+  MetaSiteTreeExtension: gorriecoe\Meta\Extensions\MetaSiteTreeExtension
+  MetaTagExtension: gorriecoe\Meta\Extensions\MetaTagExtension

@@ -203,14 +203,15 @@ class MetaFieldsExtension extends DataExtension
 
         if ($config->get('pinterest')) {
             $fields->addFieldToTab(
-                "Root.$tabName",
+                'Root.MetaContent',
                 UploadField::create(
                     'PinterestCustomImage',
                     _t(__CLASS__ . 'PINTERESTIMAGE', 'Pinterest image')
                 )
                 ->setAllowedFileCategories('image')
                 ->setAllowedMaxFileNumber(1)
-                ->setDescription('Square/portrait or taller images look best on Pinterest. This image should be at least 750px wide.'));
+                ->setDescription('Square/portrait or taller images look best on Pinterest. This image should be at least 750px wide.')
+            );
         }
 
         $fields->fieldByName('Root.MetaContent')->setTitle(_t(__CLASS__ . '.TABLABEL', 'Meta Content'));

@@ -4,7 +4,7 @@ Improves silverstripes html meta data options.
 ## Installation
 Composer is the recommended way of installing SilverStripe modules.
 ```
-composer require gorriecoe/silverstripe-action
+composer require gorriecoe/silverstripe-meta
 ```
 
 ## Requirements

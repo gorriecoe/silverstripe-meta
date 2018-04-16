@@ -15,45 +15,29 @@ use SilverStripe\Core\Convert;
 class MetaTagExtension extends DataExtension
 {
     /**
-     * Ensure public URLs are re-scraped by Facebook after publishing.
+     * @var array
      */
-    public function onAfterPublish()
-    {
-        $this->owner->clearFacebookCache();
-    }
-
-    /**
-     * Ensure public URLs are re-scraped by Facebook after writing.
-     */
-    public function onAfterWrite()
-    {
-        if (!$this->owner->hasMethod('doPublish')) {
-            $this->owner->clearFacebookCache();
-        }
-    }
-
-    /**
-     * Tell Facebook to re-scrape this URL, if it is accessible to the public.
-     *
-     * @return RestfulService_Response
-     */
-    public function clearFacebookCache()
-    {
-        if (!$this->owner->hasMethod('AbsoluteLink')) {
-            return false;
-        }
-        $anonymousUser = new Member();
-        if ($this->owner->can('View', $anonymousUser)) {
-            $fetch = new RestfulService('https://graph.facebook.com/');
-            $fetch->setQueryString(
-                array(
-                    'id' => $this->owner->AbsoluteLink(),
-                    'scrape' => true,
-                )
-            );
-            return $fetch->request();
-        }
-    }
+    protected $meta_tags = [
+        'MetaTitle' => '{$MetaTitle|Title|SiteConfig.MetaTitle} &raquo; {$SiteConfig.Title}',
+        'MetaCharset' => null,
+        'MetaGenerator' => null,
+        'MetaDescription' => 'MetaDescription|Content.Summary(160)',
+        'MetaRobots' => null,
+        'MetaResponsive' => null,
+        'TwitterTitle' => 'TwitterTitle|MetaTitle|Title',
+        'TwitterDescription' => 'TwitterDescription|MetaDescription|Description',
+        'TwitterCard' => null,
+        'TwitterImage' => 'TwitterCustomImage|MetaCustomImage',
+        'TwitterSite' => 'TwitterUsername',
+        'TwitterCreator' => 'TwitterUsername',
+        'OGTitle' => 'OGTitle|MetaTitle|Title',
+        'OGType' => null,
+        'OGImage' => 'OGCustomImage|MetaCustomImage',
+        'OGImageType' => 'OGCustomImage.MimeType|MetaCustomImage.MimeType',
+        'OGUrl' => 'AbsoluteLink',
+        'OGDescription' => 'OGDescription|MetaDescription|Content',
+        'OGSiteName' => 'SiteConfig.Title'
+    ];
 
     /**
      * Extension hook to change all tags
@@ -62,114 +46,42 @@ class MetaTagExtension extends DataExtension
     {
         $meta = [];
         $owner = $this->owner;
-        $config = $owner->config();
-        $meta_content = $config->get('meta_content');
+        $meta_tags = array_merge(
+            $this->meta_tags,
+            $owner->config()->get('meta_tags')
+        );
 
-        $tagTypes = [
-            'MetaTitle' => [
-                'DefaultPattern' => '{$MetaTitle|Title|SiteConfig.MetaTitle} &raquo; {$SiteConfig.Title}',
-                'Markup' => '<title>$Pattern</title>',
-            ],
-            'MetaCharset' => null,
-            'MetaGenerator' => [
-                'Markup' => '<meta generator="SilverStripe" />'
-            ],
-            'MetaDescription' => 'MetaDescription|Content',
-            'MetaRobots' => null,
-            'MetaResponsive' => [
-                'Markup' => '<meta viewport="width=device-width, initial-scale=1.0" />'
-            ],
-            'TwitterTitle' => [
-                'DefaultPattern' => 'TwitterTitle|MetaTitle|Title',
-                'Markup' => '<meta twitter:title="$Pattern" />'
-            ],
-            'TwitterDescription' => [
-                'DefaultPattern' => 'TwitterDescription|MetaDescription|Description|SiteConfig.TwitterDescription|SiteConfig.MetaDescription|SiteConfig.Description',
-                'Markup' => '<meta twitter:description="$Pattern" />'
-            ],
-            'TwitterCard' => [
-                'Markup' => '<meta twitter:card="summary_large_image" />'
-            ],
-            'TwitterImage' => [
-                'DefaultPattern' => 'TwitterCustomImage|MetaCustomImage|SiteConfig.TwitterCustomImage|SiteConfig.MetaCustomImage',
-                'Markup' => '<meta twitter:image="$Pattern" />'
-            ],
-            'TwitterSite' => [
-                'DefaultPattern' => 'TwitterUsername|SiteConfig.TwitterUsername',
-                'Markup' => '<meta twitter:site="@$Pattern" />'
-            ],
-            'TwitterCreator' => [
-                'DefaultPattern' => 'TwitterUsername|SiteConfig.TwitterUsername',
-                'Markup' => '<meta twitter:creator="@$Pattern" />'
-            ],
-            'OGTitle' => [
-                'DefaultPattern' => 'OGTitle|MetaTitle|Title',
-                'Markup' => '<meta property="og:title" content="$Pattern" />'
-            ],
-            'OGType' => [
-                'Markup' => '<meta property="og:type" content="website" />'
-            ],
-            'OGImage' => [
-                'DefaultPattern' => 'OGCustomImage|MetaCustomImage',
-                'Markup' => '<meta property="og:image" content="$Pattern" />'
-            ],
-            'OGImageType' => [
-                'DefaultPattern' => 'OGCustomImage.MimeType|MetaCustomImage.MimeType',
-                'Markup' => '<meta property="og:image:type" content="$Pattern" />'
-            ],
-            'OGUrl' => [
-                'DefaultPattern' => 'AbsoluteLink',
-                'Markup' => '<meta property="og:url" content="$Pattern" />'
-            ],
-            'OGDescription' => [
-                'DefaultPattern' => 'OGDescription|MetaDescription|Content',
-                'Markup' => '<meta property="og:description" content="$Pattern" />'
-            ],
-            'OGSiteName' => [
-                'DefaultPattern' => 'SiteConfig.Title',
-                'Markup' => '<meta property="og:site_name" content="$Pattern" />'
-            ]
-        ];
+        foreach ($meta_tags as $call => $values) {
+            if ($values) {
+                if (is_string($values)) {
+                    $values = [$values];
+                }
 
-        foreach ($tagTypes as $call => $default) {
-            if (is_array($default) && !isset($default['DefaultPattern']) && isset($default['Markup'])) {
-                $meta[$call] = $default['Markup'];
-            } elseif (isset($meta_content[$call]) && is_array($default)) {
-                // Use markup variable and insert the pattern defined in the extended object.
+                $owner->extend('update' . $call, $values);
+
+                foreach ($values as $value) {
+                    if ($value = $owner->sreg($value)) {
+                        break;
+                    }
+                }
+
                 $meta[$call] = str_replace(
-                    '$Pattern',
-                    $owner->sreg($meta_content[$call]),
-                    $default['Markup']
+                    '$Value',
+                    $value,
+                    $this->{$call . 'Tag'}()
                 );
-            } elseif (isset($meta_content[$call]) && method_exists($this, $call)) {
-                // Call function in this class and pass it the pattern defined in the extended object.
-                $meta[$call] = $this->{$call}($owner->sreg($meta_content[$call]));
-            } elseif ($owner->hasMethod($call)) {
-                // Call function in the extended object.
-                $meta[$call] = $owner->{$call}();
-            } elseif (is_array($default)) {
-                // Use markup variable and insert the default pattern defined above.
-                $meta[$call] = str_replace(
-                    '$Pattern',
-                    $owner->sreg($default['DefaultPattern']),
-                    $default['Markup']
-                );
-            } elseif (method_exists($this, $call)) {
-                // Call function in this class and pass it the default pattern defined above.
-                $meta[$call] = $this->{$call}($owner->sreg($default));
-            }
-        }
-
-        foreach ($meta as $key => $tag) {
-            if (is_object($tag) && $tag instanceof HTMLTag) {
-                $meta[$key] = $tag->Render();
+            } else {
+                $meta[$call] = $this->{$call . 'Tag'}();
             }
         }
 
         $tags = implode("\n", $meta);
     }
 
-    private function MetaCharset($value = null)
+    /**
+     * @return string
+     */
+    public function MetaCharsetTag()
     {
         $charset = ContentNegotiator::config()->uninherited('encoding');
         $tags[] = "<meta charset='$charset'>";
@@ -177,35 +89,53 @@ class MetaTagExtension extends DataExtension
         return implode("\n", $tags);
     }
 
-    private function MetaDescription($value = null)
+    /**
+     * @return string
+     */
+    public function MetaTitleTag()
     {
-        $owner = $this->owner;
-        $value = Convert::raw2att(strip_tags($value));
-        $value = substr($value, 0, 160);
-        $matches = [];
-        $regex = preg_match('(.*[\.\?!])', $value, $matches);
-        if(isset($matches[0])) {
-            $metaDescription = $matches[0];
-        } else {
-            $metaDescription = $value;
-        }
-        return '<meta description="' . $metaDescription . '" />';
+        return '<title>$Value</title>';
     }
 
-    private function MetaRobots($value = null)
+    /**
+     * @return string
+     */
+    public function MetaGeneratorTag()
+    {
+        return '<meta generator="SilverStripe" />';
+    }
+
+    public function MetaResponsiveTag()
+    {
+        return '<meta viewport="width=device-width, initial-scale=1.0" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function MetaDescriptionTag()
+    {
+        return '<meta description="$Value" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function MetaRobotsTag()
     {
         $owner = $this->owner;
-        $robots = [];
-
         // Force settings on test and dev enviroment
         if (!Director::isLive()) {
-            $robots[] = 'noindex';
-            $robots[] = 'nofollow';
-            $robots[] = 'nosnippet';
-            $robots[] = 'noindex';
-            $robots[] = 'nocache';
-            $robots[] = 'noarchive';
+            $robots = [
+                'noindex',
+                'nofollow',
+                'nosnippet',
+                'noindex',
+                'nocache',
+                'noarchive'
+            ];
         } else {
+            $robots = [];
             $robots[] = ($owner->NoIndex) ? 'noindex' : 'index';
             $robots[] = ($owner->NoFollow) ? 'nofollow' : 'follow';
             if ($owner->NoSnippet) {
@@ -218,5 +148,103 @@ class MetaTagExtension extends DataExtension
         }
 
         return '<meta robots="' . implode(', ', $robots) . '" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function TwitterTitleTag()
+    {
+        return '<meta twitter:title="$Value" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function TwitterDescriptionTag()
+    {
+        return '<meta twitter:description="$Value" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function TwitterCardTag()
+    {
+        return '<meta twitter:card="summary_large_image" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function TwitterImageTag()
+    {
+        return '<meta twitter:image="$Value" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function TwitterSiteTag()
+    {
+        return '<meta twitter:site="@$Value" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function TwitterCreatorTag()
+    {
+        return '<meta twitter:creator="@$Value" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function OGTitleTag()
+    {
+        return '<meta property="og:title" content="$Value" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function OGTypeTag()
+    {
+        return '<meta property="og:type" content="website" />';
+    }
+
+    public function OGImageTag()
+    {
+        return '<meta property="og:image" content="$Value" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function OGImageTypeTag()
+    {
+        return '<meta property="og:image:type" content="$Value" />';
+    }
+
+    public function OGUrlTag()
+    {
+        return '<meta property="og:url" content="$Value" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function OGDescriptionTag()
+    {
+        return '<meta property="og:description" content="$Value" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function OGSiteNameTag()
+    {
+        return '<meta property="og:site_name" content="$Value" />';
     }
 }
