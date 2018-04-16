@@ -12,6 +12,9 @@ SilverStripe\CMS\Model\SiteTree:
 Only:
   moduleexists: 'silverstripe/siteconfig'
 ---
+SilverStripe\CMS\Model\SiteTree:
+  extensions:
+    - gorriecoe\Meta\Extensions\MetaSiteTreeConfigExtension
 SilverStripe\SiteConfig\SiteConfig:
   extensions:
     - gorriecoe\Meta\Extensions\MetaFieldsExtension

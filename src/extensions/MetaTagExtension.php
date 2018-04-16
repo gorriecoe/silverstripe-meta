@@ -25,7 +25,7 @@ class MetaTagExtension extends DataExtension
         'MetaRobots' => null,
         'MetaResponsive' => null,
         'TwitterTitle' => 'TwitterTitle|MetaTitle|Title',
-        'TwitterDescription' => 'TwitterDescription|MetaDescription|Description',
+        'TwitterDescription' => 'TwitterDescription|MetaDescription|Content.Summary(160)',
         'TwitterCard' => null,
         'TwitterImage' => 'TwitterCustomImage|MetaCustomImage',
         'TwitterSite' => 'TwitterUsername',
@@ -48,7 +48,7 @@ class MetaTagExtension extends DataExtension
         $owner = $this->owner;
         $meta_tags = array_merge(
             $this->meta_tags,
-            $owner->config()->get('meta_tags')
+            $owner->config()->get('meta_tags') ? : []
         );
 
         foreach ($meta_tags as $call => $values) {
