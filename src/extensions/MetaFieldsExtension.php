@@ -48,8 +48,7 @@ class MetaFieldsExtension extends DataExtension
         'MetaCustomImage' => Image::class,
         'TwitterCustomImage' => Image::class,
         'OGCustomImage' => Image::class,
-        'PinterestCustomImage' => Image::class,
-        'BreadcrumbIcon' => Image::class
+        'PinterestCustomImage' => Image::class
     ];
 
     /**
@@ -86,9 +85,7 @@ class MetaFieldsExtension extends DataExtension
             'FBAuthorlink',
             'GplusAuthorlink',
             'GplusPublisherlink',
-            'PinterestCustomImage',
-            'RichSnippetsHeader',
-            'BreadcrumbIcon'
+            'PinterestCustomImage'
         ]);
 
         $fields->addFieldsToTab(
@@ -187,17 +184,7 @@ class MetaFieldsExtension extends DataExtension
                     "GplusPublisherlink",
                     _t(__CLASS__ . 'GPLUSPUBLISHERLINK', 'Google+ publisher')
                 )
-                ->setRightTitle(_t(__CLASS__ . 'GPLUSPUBLISHERLINKHELP', 'Publisher Google+ PAGE URL')),
-                HeaderField::create(
-                    'RichSnippetsHeader',
-                    _t(__CLASS__ . 'RICHSNIPPETSHEADER', 'Rich snippets')
-                ),
-                UploadField::create(
-                    'BreadcrumbIcon',
-                    _t(__CLASS__ . 'BREADCRUMBICON', 'Breadcrumb Icon')
-                )
-                ->setAllowedFileCategories('image')
-                ->setAllowedMaxFileNumber(1)
+                ->setRightTitle(_t(__CLASS__ . 'GPLUSPUBLISHERLINKHELP', 'Publisher Google+ PAGE URL'))
             )
         );
 
