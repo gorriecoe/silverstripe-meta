@@ -37,10 +37,10 @@ class MetaTagExtension extends DataExtension
         'OGUrl' => 'AbsoluteLink',
         'OGDescription' => 'OGDescription|MetaDescription|Content',
         'OGSiteName' => 'SiteConfig.Title',
-        'FBAuthor' => 'FBAuthorlink',
-        'FBPublisher' => 'FBPublisherlink',
-        'GplusAuthor' => 'GplusAuthorlink',
-        'GplusPublisher' => 'GplusPublisherlink'
+        'FBAuthor' => 'FBAuthorlink|null',
+        'FBPublisher' => 'FBPublisherlink|null',
+        'GplusAuthor' => 'GplusAuthorlink|null',
+        'GplusPublisher' => 'GplusPublisherlink|null'
     ];
 
     /**
@@ -68,12 +68,13 @@ class MetaTagExtension extends DataExtension
                         break;
                     }
                 }
-
-                $meta[$call] = str_replace(
-                    '$Value',
-                    $value,
-                    $this->{$call . 'Tag'}()
-                );
+                if ($value) {
+                    $meta[$call] = str_replace(
+                        '$Value',
+                        $value,
+                        $this->{$call . 'Tag'}()
+                    );
+                }
             } else {
                 $meta[$call] = $this->{$call . 'Tag'}();
             }
