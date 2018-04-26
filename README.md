@@ -17,7 +17,7 @@ composer require gorriecoe/silverstripe-meta
 - [Gorrie Coe](https://github.com/gorriecoe)
 
 ## Usage
-Add the `$MetaTags` in the `head` as you would normally do in (silverStripe)[https://docs.silverstripe.org/en/4/developer_guides/templates/common_variables/#meta-tags].  The only difference is that can no longer be passed false to prevent the title tag
+Add the `$MetaTags` in the `head` as you would normally do in [SilverStripe](https://docs.silverstripe.org/en/4/developer_guides/templates/common_variables/#meta-tags).  The only difference is that can no longer be passed false to prevent the title tag
 ```
 <head>
     {$MetaTags}
