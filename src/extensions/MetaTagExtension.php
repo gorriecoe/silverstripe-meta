@@ -36,7 +36,11 @@ class MetaTagExtension extends DataExtension
         'OGImageType' => 'OGCustomImage.MimeType|MetaCustomImage.MimeType',
         'OGUrl' => 'AbsoluteLink',
         'OGDescription' => 'OGDescription|MetaDescription|Content',
-        'OGSiteName' => 'SiteConfig.Title'
+        'OGSiteName' => 'SiteConfig.Title',
+        'FBAuthor' => 'FBAuthorlink',
+        'FBPublisher' => 'FBPublisherlink',
+        'GplusAuthor' => 'GplusAuthorlink',
+        'GplusPublisher' => 'GplusPublisherlink'
     ];
 
     /**
@@ -246,5 +250,37 @@ class MetaTagExtension extends DataExtension
     public function OGSiteNameTag()
     {
         return '<meta property="og:site_name" content="$Value" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function FBAuthorTag()
+    {
+        return '<meta property="article:author" href="$Value" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function FBPublisherTag()
+    {
+        return '<meta property="article:publisher" href="$Value" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function GplusAuthorTag()
+    {
+        return '<link rel="author" href="$Value" />';
+    }
+
+    /**
+     * @return string
+     */
+    public function GplusPublisherTag()
+    {
+        return '<link rel="publisher" href="$Value" />';
     }
 }
