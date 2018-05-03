@@ -33,7 +33,7 @@ class MetaSiteTreeExtension extends DataExtension
 
     /**
      * Tell Facebook to re-scrape this URL, if it is accessible to the public.
-     * @return RestfulService_Response
+     * @return String|false
      */
     public function clearFacebookCache()
     {
@@ -43,14 +43,22 @@ class MetaSiteTreeExtension extends DataExtension
         }
         $anonymousUser = Member::create();
         if ($owner->can('View', $anonymousUser)) {
-            $fetch = new RestfulService('https://graph.facebook.com/');
-            $fetch->setQueryString(
+            $curlRequest = curl_init();
+            curl_setopt_array(
+                $curlRequest,
                 array(
-                    'id' => $owner->AbsoluteLink(),
-                    'scrape' => true,
+                    CURLOPT_URL => 'https://graph.facebook.com/v1.0/?id='. urlencode($owner->AbsoluteLink()). '&scrape=1',
+                    CURLOPT_POST => 1,
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_SSL_VERIFYPEER => false,
                 )
             );
-            return $fetch->request();
+            $response = curl_exec($curlRequest);
+            $headers = curl_getinfo($curlRequest);
+            if(!$response || $headers['http_code'] !== 200) {
+                return false;
+            }
+            return $response;
         }
     }
 }
