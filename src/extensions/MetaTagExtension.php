@@ -112,7 +112,7 @@ class MetaTagExtension extends DataExtension
 
     public function MetaResponsiveTag()
     {
-        return '<meta viewport="width=device-width, initial-scale=1.0" />';
+        return '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
     }
 
     /**
