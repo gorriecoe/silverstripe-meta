@@ -12,53 +12,61 @@ use SilverStripe\Security\Member;
  */
 class MetaSiteTreeConfigExtension extends DataExtension
 {
-    public function updateMetaDescription(&$values)
+    public function updateMetaDescriptionData(&$values)
     {
-        $values[] = 'SiteConfig.MetaDescription|SiteConfig.Content.Summary(160)';
+        $values[] = 'SiteConfig.MetaDescription';
+        $values[] = 'SiteConfig.Content.Summary(160)';
     }
 
-    public function updateTwitterTitle(&$values)
+    public function updateTwitterTitleData(&$values)
     {
-        $values[] = 'SiteConfig.TwitterTitle|SiteConfig.MetaTitle';
+        $values[] = 'SiteConfig.TwitterTitle';
+        $values[] = 'SiteConfig.MetaTitle';
     }
 
-    public function updateTwitterDescription(&$values)
+    public function updateTwitterDescriptionData(&$values)
     {
-        $values[] = 'SiteConfig.TwitterDescription|SiteConfig.MetaDescription';
+        $values[] = 'SiteConfig.TwitterDescription';
+        $values[] = 'SiteConfig.MetaDescription';
     }
 
-    public function updateTwitterImage(&$values)
+    public function updateTwitterImageData(&$values)
     {
-        $values[] = 'SiteConfig.TwitterCustomImage|SiteConfig.MetaCustomImage';
+        $values[] = 'SiteConfig.TwitterCustomImage';
+        $values[] = 'SiteConfig.MetaCustomImage';
     }
 
-    public function updateTwitterSite(&$values)
+    public function updateTwitterSiteData(&$values)
     {
         $values[] = 'SiteConfig.TwitterUsername';
     }
 
-    public function updateTwitterCreator(&$values)
+    public function updateTwitterCreatorData(&$values)
     {
         $values[] = 'SiteConfig.TwitterUsername';
     }
 
-    public function updateOGTitle(&$values)
+    public function updateOGTitleData(&$values)
     {
-        $values[] = 'SiteConfig.OGTitle|SiteConfig.MetaTitle';
+        $values[] = 'SiteConfig.OGTitle';
+        $values[] = 'SiteConfig.MetaTitle';
     }
 
-    public function updateOGImage(&$values)
+    public function updateOGImageData(&$values)
     {
-        $values[] = 'SiteConfig.OGCustomImage|SiteConfig.MetaCustomImage';
+        $values[] = 'SiteConfig.OGCustomImage';
+        $values[] = 'SiteConfig.MetaCustomImage';
     }
 
-    public function updateOGImageType(&$values)
+    public function updateOGImageTypeData(&$values)
     {
-        $values[] = 'SiteConfig.OGCustomImage.MimeType|SiteConfig.MetaCustomImage.MimeType';
+        $values[] = 'SiteConfig.OGCustomImage.MimeType';
+        $values[] = 'SiteConfig.MetaCustomImage.MimeType';
     }
 
-    public function updateOGDescription(&$values)
+    public function updateOGDescriptionData(&$values)
     {
-        $values[] = 'SiteConfig.OGDescription|SiteConfig.MetaDescription';
+        $values[] = 'SiteConfig.OGDescription';
+        $values[] = 'SiteConfig.MetaDescription';
     }
 }

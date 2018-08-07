@@ -10,7 +10,6 @@ composer require gorriecoe/silverstripe-meta
 ## Requirements
 
 - silverstripe/cms ^4.0
-- gorriecoe/silverstripe-sreg ^1.2
 
 ## Maintainers
 
@@ -25,15 +24,20 @@ Add the `$MetaTags` in the `head` as you would normally do in [SilverStripe](htt
 ```
 
 ### Modify title tag
-If you want to modify title tag, include `$meta_tags` variable with `MetaTitle` key in your page.
+If you want to modify title tag, include `$meta_data` variable with `MetaTitle` key in your page.
 ```php
 <?php
 class MyPage extends Page
 {
-    private static $meta_tags = [
-        'MetaTitle' => '{$MetaTitle|Title|SiteConfig.MetaTitle} &raquo; {$SiteConfig.Title}'
+    private static $meta_data = [
+        'MetaTitle' => [
+            'MetaTitle',
+            'Title',
+            'SiteConfig.MetaTitle'
+        ]
     ];
 }
 ```
+In the example above MetaTitle will use data from MetaTitle if found, if not it will fallback to Title and finally fall back to the SiteConfig MetaTitle.
 
 Other modifiable tags include: `MetaTitle`, `MetaDescription`, `MetaRobots`, `TwitterTitle`, `TwitterDescription`, `TwitterImage`, `TwitterSite`, `TwitterCreator`, `OGTitle`, `OGImage`, `OGImageType`, `OGUrl`, `OGDescription`, `OGSiteName`, `FBAuthor`, `FBPublisher`, `GplusAuthor`  and `GplusPublisher`

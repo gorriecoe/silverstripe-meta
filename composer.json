@@ -23,8 +23,7 @@
   "homepage": "http://github.com/gorriecoe/silverstripe-meta",
   "require":
   {
-    "silverstripe/framework": "^4.0",
-    "gorriecoe/silverstripe-sreg": "^1.2"
+    "silverstripe/framework": "^4.0"
   },
   "extra": {
     "installer-name": "meta"
