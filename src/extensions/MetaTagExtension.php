@@ -25,7 +25,7 @@ class MetaTagExtension extends DataExtension
         'MetaCharset' => 'MetaCharset',
         'MetaDescription' => [
             'MetaDescription',
-            'Content.Summary(160)'
+            'Content.Plain'
         ],
         'MetaRobots' => 'MetaRobots',
         'TwitterTitle' => [
@@ -36,7 +36,7 @@ class MetaTagExtension extends DataExtension
         'TwitterDescription' => [
             'TwitterDescription',
             'MetaDescription',
-            'Content.Summary(160)'
+            'Content.Plain'
         ],
         'TwitterImage' => [
             'TwitterCustomImage',
@@ -57,7 +57,7 @@ class MetaTagExtension extends DataExtension
         'OGDescription' => [
             'OGDescription',
             'MetaDescription',
-            'Content'
+            'Content.Plain'
         ],
         'OGSiteName' => 'SiteConfig.Title',
         'FBAuthor' => 'FBAuthorlink',

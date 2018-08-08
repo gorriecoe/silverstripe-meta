@@ -6,7 +6,7 @@
     <meta generator="SilverStripe" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <% if MetaDescription %>
-    <meta description="{$MetaDescription.Summary}" />
+    <meta description="{$MetaDescription.Summary(160)}" />
 <% end_if %>
 <% if MetaRobots %>
     <meta robots="{$MetaRobots}" />
@@ -15,7 +15,7 @@
     <meta twitter:title="{$TwitterTitle}" />
 <% end_if %>
 <% if TwitterDescription %>
-    <meta twitter:description="{$TwitterDescription.Summary}" />
+    <meta twitter:description="{$TwitterDescription.Summary(160)}" />
 <% end_if %>
 <% if TwitterImage %>
     <meta twitter:card="summary_large_image" />
@@ -39,7 +39,7 @@
     <meta property="og:url" content="{$OGUrl}" />
 <% end_if %>
 <% if OGDescription %>
-    <meta property="og:description" content="{$OGDescription.Summary}" />
+    <meta property="og:description" content="{$OGDescription.Summary(160)}" />
 <% end_if %>
 <% if OGSiteName %>
     <meta property="og:site_name" content="{$OGSiteName}" />
