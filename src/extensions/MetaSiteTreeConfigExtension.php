@@ -15,7 +15,6 @@ class MetaSiteTreeConfigExtension extends DataExtension
     public function updateMetaDescriptionData(&$values)
     {
         $values[] = 'SiteConfig.MetaDescription';
-        $values[] = 'SiteConfig.Content.Plain';
     }
 
     public function updateTwitterTitleData(&$values)
