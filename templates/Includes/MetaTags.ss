@@ -19,7 +19,7 @@
 <% end_if %>
 <% if TwitterImage %>
     <meta twitter:card="summary_large_image" />
-    <meta twitter:image="{$TwitterImage}" />
+    <meta twitter:image="{$TwitterImage.AbsoluteURL}" />
 <% end_if %>
 <% if TwitterSite %>
     <meta twitter:site="@{$TwitterSite}" />
@@ -32,7 +32,7 @@
 <% end_if %>
     <meta property="og:type" content="website" />
 <% if OGImage %>
-    <meta property="og:image" content="{$OGImage}" />
+    <meta property="og:image" content="{$OGImage.AbsoluteURL}" />
     <meta property="og:image:type" content="{$OGImage.MimeType}" />
 <% end_if %>
 <% if OGUrl %>
