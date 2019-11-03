@@ -6,7 +6,7 @@
     <meta generator="SilverStripe" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <% if MetaDescription %>
-    <meta description="{$MetaDescription.Summary(160)}" />
+    <meta name="description" content="{$MetaDescription.Summary(160)}" />
 <% end_if %>
 <% if MetaRobots %>
     <meta robots="{$MetaRobots}" />
